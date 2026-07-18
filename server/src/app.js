@@ -14,12 +14,23 @@ dotenv.config();
 const app = express();
 
 // Middleware
+// app.use(
+//   cors({
+//     origin: process.env.CLIENT_URL || "https://careertrackerai.vercel.app",
+//     credentials: true,
+//   }),
+// ); // >>>> it allows the frontend to make requests to the backend
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "https://careertrackerai.vercel.app",
+    origin: [
+      "https://careertrackerai.vercel.app",
+      "http://localhost:3000",
+    ],
     credentials: true,
-  }),
-); // >>>> it allows the frontend to make requests to the backend
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json()); // >>>> it parse the incoming json data from the body of the request
 app.use(cookieParser()); // >>> it helps to read the cookies from the browser
 app.use(express.static("public")); // >>> it serves the static files from the public folder
