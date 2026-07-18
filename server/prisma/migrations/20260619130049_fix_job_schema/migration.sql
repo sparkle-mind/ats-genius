@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Job" ALTER COLUMN "currency" SET DATA TYPE VARCHAR(50);

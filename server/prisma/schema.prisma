@@ -1,0 +1,201 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  fullName     String?
+  email        String   @unique
+  password     String?
+  agreeToTerms Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  refreshToken     String?
+
+  profile UserProfile?
+  jobs    Job[]
+
+  googleId String?  @unique
+  provider String   @default("local")
+  resumes  Resume[]
+  notifications Notification[]
+}
+
+model UserProfile {
+  id Int @id @default(autoincrement())
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  phoneNumber String?
+  location    String?
+  jobTitle    String?
+  website     String?
+  bio         String?
+  avatar      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Resume {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  file  String
+  cloudinaryPublicId  String?
+  fileResult String[] 
+  title String
+  name  String
+  email String
+  phone String
+
+  skills     String[] // PostgreSQL array
+  experience String?
+
+  linkedin  String?
+  portfolio String?
+  notes     String?
+  parsedText String? @db.Text
+
+  atsScore Int?
+  atsAnalysis Json?
+  isAtsAvailable Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Job {
+  id              Int       @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName     String    @db.VarChar(255)
+  jobTitle        String    @db.VarChar(255)
+  role            String?   @db.VarChar(255)
+  location        String    @db.VarChar(255)
+  experience      String?   @db.VarChar(100)
+  jobType         JobType
+  workMode        WorkMode
+  platform        String    @db.VarChar(100)
+  jobUrl          String?   @db.Text
+  companyWebsite  String?   @db.Text
+  recruiterName   String?   @db.VarChar(255)
+  recruiterEmail  String?   @db.VarChar(255)
+  expectedSalary  Decimal?  @db.Decimal(12, 2)
+  offeredSalary   Decimal?  @db.Decimal(12, 2)
+  currency        String    @default("INR")
+  applicationDate String
+  interviewDate   String?
+  followUpDate    String?
+  status          JobStatus @default(saved)
+  priority        Priority  @default(MEDIUM)
+  jobDescription  String?   @db.Text
+  note            String?   @db.Text
+  feedback        String?   @db.Text
+  interviews      Interview[]
+  nextActions     NextActions[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+
+enum JobType {
+  FullTime
+  PartTime
+  Contract
+  Freelance
+  Internship
+}
+
+enum WorkMode {
+  Remote
+  Hybrid
+  Onsite
+}
+
+enum JobStatus {
+  saved
+  applied
+  screening
+  interview
+  offer
+  rejected
+  withdrawn
+  joined
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model NextActions {
+  id        Int     @id @default(autoincrement())
+  jobId     Int
+  job       Job     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  title     String  @db.VarChar(255)
+  completed Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Interview {
+  id              Int       @id @default(autoincrement())
+  applicationId Int
+  application   Job @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  stage         String    // e.g., "Phone Screen", "Technical", "System Design", "Behavioural", "Onsite"
+  scheduledDate DateTime     // date + time
+  interviewer   String?
+  duration      Int?
+  score         Int?      // 0-100
+  result        String?   // "Passed", "Rejected", "Pending"
+  feedback      String?   // notes after interview
+  prepLink      String?   // optional link to specific prep material
+  notes         String?  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  @@unique([applicationId, stage])
+}
+
+model PrepResource {
+  id          Int       @id @default(autoincrement())
+  title       String
+  category    String   // "System Design", "Soft Skills", "Technical", "Practice"
+  level       String?  // "Beginner", "Intermediate", "Advanced"
+  duration    Int      // in minutes
+  description String?
+  resourceUrl String
+  createdAt   DateTime @default(now())
+} 
+
+model Notification {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type        String   // "APPLICATION_DELETED", "RESUME_DELETED"
+  title       String
+  message     String
+  metadata    Json?    // stores extra data like company name
+
+  isRead      Boolean  @default(false)
+  readAt      DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([userId, isRead])
+}
