@@ -77,20 +77,24 @@ export default function Login() {
   const handleGoogleLogin = async (response) => {
     const token = response.credential; // Google JWT
 
-    const res = await fetch("http://localhost:5000/api/auth/google", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token,
-      }),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/google` ||
+      "http://localhost:5000/api/auth/google",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token,
+        }),
+      });
     const data = await res.json();
     console.log("Google login response >>>> ", data);
     toast.success(data?.message || "Google login successful!");
     router.refresh();
+    router.push("/dashboard");
   };
 
   const handleGoogleLoginFailed = () => {
