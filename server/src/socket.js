@@ -8,7 +8,7 @@ let io;
 export const initializeSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: process.env.CLIENT_URL || "http://localhost:3000",
+      origin: process.env.CLIENT_URL || "https://careertrackerai.vercel.app/",
       credentials: true,
     },
   });
