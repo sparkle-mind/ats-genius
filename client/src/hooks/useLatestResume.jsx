@@ -8,5 +8,6 @@ export const useLatestResume = () => {
     queryFn: getLatestResumeAPI,
     staleTime: 1000 * 60 * 2,
     refetchOnWindowFocus: false,
+    retry: false,
   });
 };

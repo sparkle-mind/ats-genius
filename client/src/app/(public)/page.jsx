@@ -68,8 +68,8 @@ const features = [
 
 const testimonials = [
   {
-    name: "Sarah Chen",
-    role: "Software Engineer @ Stripe",
+    name: "Samir Patel",
+    role: "Software Engineer @ Genius",
     avatar: "SC",
     rating: 5,
     quote:
@@ -229,7 +229,7 @@ export default function LandingPage() {
         </div>
 
         <div className="container relative z-10 py-20 sm:py-28">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto text-center pt-5">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 badge badge-primary mb-6 animate-fade-in-up">
               <Zap className="w-3 h-3" />
@@ -284,7 +284,7 @@ export default function LandingPage() {
           </div>
 
           {/* Stats row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 max-w-3xl mx-auto animate-fade-in-up delay-500">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 max-w-3xl mx-auto animate-fade-in-up delay-500 pb-5">
             {stats.map((s) => (
               <div
                 key={s.label}
@@ -489,16 +489,15 @@ export default function LandingPage() {
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className={`relative rounded-2xl p-6 flex flex-col gap-5 ${
-                  plan.highlight ? "glow-border border" : "glass-card"
-                }`}
+                className={`relative rounded-2xl p-6 flex flex-col gap-5 ${plan.highlight ? "glow-border border" : "glass-card"
+                  }`}
                 style={
                   plan.highlight
                     ? {
-                        background:
-                          "linear-gradient(to bottom, rgba(255,87,34,0.10), rgba(255,112,67,0.04))",
-                        borderColor: "rgba(255,87,34,0.30)",
-                      }
+                      background:
+                        "linear-gradient(to bottom, rgba(255,87,34,0.10), rgba(255,112,67,0.04))",
+                      borderColor: "rgba(255,87,34,0.30)",
+                    }
                     : {}
                 }
               >

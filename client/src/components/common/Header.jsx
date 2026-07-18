@@ -61,20 +61,29 @@ export default function Header() {
             {/* CTA */}
             <div className="hidden md:flex items-center gap-3">
               {isLoading ? null : isLoggedIn ? (
-                <Link href="/dashboard" className="h-[45px] w-[45px]">
-                  <div className="relative w-[45px] h-[45px]">
-                    {/* Animated border */}
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-500 via-orange-300 to-orange-500 animate-spin [animation-duration:3s]" />
-
-                    {/* Inner content */}
-                    <div className="absolute inset-[2px] rounded-full bg-black flex items-center justify-center">
+                <Link 
+                  href="/dashboard" 
+                  className="group relative block h-[45px] w-[45px] transition-transform duration-300 hover:scale-105"
+                >
+                  {/* Ping Radar Aura */}
+                  <div className="absolute inset-0 rounded-full bg-orange-500/30 opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-all duration-500" />
+                  
+                  {/* Outer Orbit Glowing Border */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF5722] via-[#FFAB91] to-[#FF7043] animate-spin [animation-duration:6s] group-hover:[animation-duration:2s] transition-all duration-500 shadow-[0_0_12px_rgba(255,87,34,0.4)]" />
+                  
+                  {/* Inner Ring Spacer */}
+                  <div className="absolute inset-[2px] rounded-full bg-[#080810] flex items-center justify-center border border-white/[0.04]">
+                    {/* Inner Avatar Container */}
+                    <div className="relative w-[37px] h-[37px] rounded-full overflow-hidden">
                       <Image
                         src={user?.profile?.avatar}
                         alt="avatar"
-                        width={41}
-                        height={41}
-                        className="rounded-full object-cover w-full h-full"
+                        width={37}
+                        height={37}
+                        className="rounded-full object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
                       />
+                      {/* Glass Shimmer Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
                     </div>
                   </div>
                 </Link>
@@ -157,20 +166,17 @@ export default function Header() {
                 onClick={() => setMobileOpen(false)}
                 className="btn-secondary !w-full !justify-center"
               >
-                 <div className="relative w-[30px] h-[30px]">
-                    {/* Animated border */}
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-500 via-orange-300 to-orange-500 animate-spin [animation-duration:3s]" />
-
-                    {/* Inner content */}
-                    <div className="absolute inset-[1px] rounded-full bg-black flex items-center justify-center">
-                      <Image
-                        src={user?.profile?.avatar}
-                        alt="avatar"
-                        width={30}
-                        height={30}
-                        className="rounded-full object-cover w-full h-full"
-                      />
-                    </div>
+                 <div className="relative w-[30px] h-[30px] shrink-0">
+                     <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF5722] via-[#FFAB91] to-[#FF7043] animate-spin [animation-duration:5s]" />
+                     <div className="absolute inset-[1.5px] rounded-full bg-[#080810] flex items-center justify-center">
+                       <Image
+                         src={user?.profile?.avatar}
+                         alt="avatar"
+                         width={27}
+                         height={27}
+                         className="rounded-full object-cover w-full h-full"
+                       />
+                     </div>
                   </div>
                   Dashboard
               </Link>

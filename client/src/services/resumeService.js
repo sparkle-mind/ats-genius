@@ -22,6 +22,9 @@ export const getLatestResumeAPI = async () => {
     const res = await api.get(`/resume-latest`);
     return res.data;
   } catch (error) {
+    if (error.response?.status === 404) {
+      return null;
+    }
     console.error("Error in getLatestResumeAPI:", error);
     throw new Error(
       error.response?.data?.message ||

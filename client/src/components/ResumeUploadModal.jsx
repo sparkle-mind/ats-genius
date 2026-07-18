@@ -7,6 +7,7 @@ import {
   CheckCircle,
   UploadCloud,
   Loader2,
+  AlertTriangle,
 } from "lucide-react";
 import CommonModal from "./common/modal/CommonModal";
 import PrimaryButton from "./atoms/buttons/PrimaryButton";
@@ -144,6 +145,14 @@ const ResumeUploadModal = ({ open, onClose }) => {
   });
 
   const handleUploadOnDatabase = async (data) => {
+    if (!file) {
+      toast.error("Please select a resume file first.");
+      return;
+    }
+    if (!isUploaded || !cloudinaryResponse) {
+      toast.error("Please click the orange 'Click to Upload' button to upload your resume before submitting.");
+      return;
+    }
     const payload = {
       ...data,
       file: cloudinaryResponse,
@@ -154,7 +163,7 @@ const ResumeUploadModal = ({ open, onClose }) => {
     uploadOnDb(payload);
     reset();
   };
-  console.log("cloudinaryResponse >>>>>",cloudinaryResponse)
+  console.log("cloudinaryResponse >>>>>", cloudinaryResponse)
 
   return (
     <CommonModal
@@ -175,11 +184,10 @@ const ResumeUploadModal = ({ open, onClose }) => {
 
           {!file ? (
             <div
-              className={`relative border-2 border-dashed rounded-[var(--radius-lg)] p-8 text-center transition-all duration-200 ${
-                dragActive
+              className={`relative border-2 border-dashed rounded-[var(--radius-lg)] p-8 text-center transition-all duration-200 ${dragActive
                   ? "border-blue-500 bg-blue-500/10"
                   : "border-gray-700 hover:border-gray-500 hover:bg-[#1f1f1f]"
-              } bg-[#111111]`}
+                } bg-[#111111]`}
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
@@ -211,45 +219,82 @@ const ResumeUploadModal = ({ open, onClose }) => {
               </div>
             </div>
           ) : (
-            <div className="flex items-center  gap-2">
-              <div className="w-max flex items-center justify-between p-4 bg-[#111111] border border-gray-700 rounded-[var(--radius-lg)]">
-                <div className="flex items-center space-x-3 pr-2">
-                  <div className="p-2 bg-blue-500/10 text-blue-400 rounded-lg">
-                    <File className="w-5 h-5" />
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="w-max flex items-center justify-between p-4 bg-[#111111] border border-gray-700 rounded-[var(--radius-lg)]">
+                  <div className="flex items-center space-x-3 pr-2">
+                    <div className="p-2 bg-blue-500/10 text-blue-400 rounded-lg">
+                      <File className="w-5 h-5" />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium text-white truncate max-w-[200px] sm:max-w-xs">
+                        {file.name}
+                      </p>
+
+                      <p className="text-xs text-gray-400">
+                        {(file.size / 1024 / 1024).toFixed(2)} MB
+                      </p>
+                    </div>
                   </div>
+                  <button
+                    type="button"
+                    onClick={removeFile}
+                    className="p-2 text-gray-400 hover:text-white hover:bg-[#1f1f1f] rounded-lg transition-colors"
+                    aria-label="Remove file"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
 
+                {isUploaded ? (
+                  <div className="flex items-center gap-1.5 text-emerald-400 font-semibold text-sm px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                    <CheckCircle className="w-4 h-4" />
+                    Ready to Save
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleUploadOnCloudinary}
+                    className={`h-[50px] px-6 rounded-xl flex items-center gap-2 font-bold text-sm text-white transition-all cursor-pointer ${
+                      isPending
+                        ? "bg-orange-500/50 cursor-not-allowed"
+                        : "bg-orange-500 hover:bg-orange-600 animate-pulse border border-orange-400/40 shadow-lg shadow-orange-500/20"
+                    }`}
+                    disabled={isPending}
+                  >
+                    {isPending ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <UploadCloud className="w-4 h-4" />
+                        Click to Upload
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
+
+              {!isUploaded && (
+                <div
+                  className="flex items-start gap-2.5 p-3 rounded-xl border animate-fade-in-up"
+                  style={{
+                    background: "rgba(251,191,36,0.06)",
+                    borderColor: "rgba(251,191,36,0.22)",
+                  }}
+                >
+                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-white truncate max-w-[200px] sm:max-w-xs">
-                      {file.name}
-                    </p>
-
-                    <p className="text-xs text-gray-400">
-                      {(file.size / 1024 / 1024).toFixed(2)} MB
+                    <p className="text-amber-300 text-xs font-bold uppercase tracking-wider">Attention Required</p>
+                    <p className="text-amber-200/80 text-xs mt-0.5 leading-relaxed">
+                      You have selected a file, but it hasn't been uploaded to our servers yet. Please click the orange <span className="font-bold text-amber-300">"Click to Upload"</span> button above before submitting.
                     </p>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={removeFile}
-                  className="p-2 text-gray-400 hover:text-white hover:bg-[#1f1f1f] rounded-lg transition-colors"
-                  aria-label="Remove file"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <SecondaryButton
-                type="button"
-                onClick={handleUploadOnCloudinary}
-                className=" rounded-lg transition-colors"
-                disabled={isUploaded || isPending}
-              >
-                {isPending ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <UploadCloud className="w-4 h-4" />
-                )}
-                Upload
-              </SecondaryButton>
+              )}
             </div>
           )}
         </div>

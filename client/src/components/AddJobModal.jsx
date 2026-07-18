@@ -115,7 +115,7 @@ const AddJobModal = ({ open, onClose }) => {
             <Input
               {...register("companyName")}
               error={errors?.companyName?.message}
-              placeholder="e.g. Frontend Developer - 2026"
+              placeholder="e.g. stripe"
               className="bg-[#111111] border-gray-700 text-white placeholder:text-gray-500"
             />
           </Grid>
@@ -127,7 +127,7 @@ const AddJobModal = ({ open, onClose }) => {
             <Input
               {...register("jobTitle")}
               error={errors?.jobTitle?.message}
-              placeholder="e.g. Frontend Developer"
+              placeholder="e.g. Developer"
               className="bg-[#111111] border-gray-700 text-white placeholder:text-gray-500"
             />
           </Grid>
@@ -137,7 +137,7 @@ const AddJobModal = ({ open, onClose }) => {
             </label>
 
             <Input
-              placeholder="tech@company.com"
+              placeholder="Sr. Frontend Developer"
               {...register("role")}
               error={errors?.role?.message}
               className="bg-[#111111] border-gray-700 text-white placeholder:text-gray-500"

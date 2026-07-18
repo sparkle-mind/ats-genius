@@ -173,9 +173,9 @@ export default function Login() {
                 <span className="text-white text-xs font-black">SC</span>
               </div>
               <div>
-                <p className="text-white text-xs font-semibold">Sarah Chen</p>
+                <p className="text-white text-xs font-semibold">Samir Patel</p>
                 <p className="text-[var(--color-text-secondary)] text-xs">
-                  Software Engineer @ Stripe
+                  Software Engineer @ Genius
                 </p>
               </div>
             </div>
@@ -298,9 +298,8 @@ export default function Login() {
             <button
               type="submit"
               disabled={loginMutation.isPending}
-              className={`btn-primary w-full justify-center h-11 mt-1 ${
-                loginMutation.isPending ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`btn-primary w-full justify-center h-11 mt-1 ${loginMutation.isPending ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             >
               {loginMutation.isPending ? (
                 "Signing in..."

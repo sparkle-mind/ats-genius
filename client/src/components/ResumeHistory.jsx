@@ -136,7 +136,7 @@ const ResumeHistory = () => {
               Manage your uploaded resumes, scores, and candidate profiles.
             </p>
           </div>
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700">
+          <span className="text-center text-xs font-semibold px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700">
             {resumesData.length} Total
           </span>
         </div>
